@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title></title>
+		<style type="text/css">
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				align-items: center;
+			}
+
+			#main {
+				width: 100%;
+				height: 75vh;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main"></div>
+
+		<script src="echarts.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			let obj = {
+				'2017-01-12': 3996.15,
+				'2017-02-14': 5103.65,
+				'2017-03-14': 5133.89,
+				'2017-04-13': 6269.27,
+				'2017-05-12': 6383.81,
+				'2017-06-13': 6320.81,
+				'2017-07-12': 6923.81,
+				'2017-08-15': 6356.92,
+				'2017-09-13': 6376.67,
+				'2017-10-13': 6376.67,
+				'2017-11-14': 6414.47,
+				'2017-12-13': 6376.67,
+				'2018-01-12': 6897.66,
+				'2018-02-10': 6357.66,
+				'2018-03-15': 7257.66,
+				'2018-04-13': 7257.66,
+				'2018-05-15': 7257.66,
+				'2018-06-15': 7257.66,
+				'2018-07-16': 7625.89,
+				'2018-08-16': 7085.89,
+				'2018-09-17': 7085.89,
+				'2018-10-16': 9140.89,
+				'2018-11-15': 9140.89,
+				'2018-12-17': 9176.89,
+				'2019-01-18': 9236.63,
+				'2019-02-19': 9818.63,
+				'2019-03-18': 9236.63,
+				'2019-04-16': 9236.63,
+				'2019-05-16': 8795.72,
+				'2019-06-18': 8795.71,
+			}
+
+			let count = 0;
+			let xAxisData = [];
+			let seriesData = [];
+			let markPointData = [];
+
+			let arrDate = [];
+			Object.keys(obj).forEach((key, idx) => {
+				count += obj[key];
+				xAxisData.push(key);
+				seriesData.push(obj[key]);
+				markPointData.push({
+					coord: [idx, obj[key]],
+					value: obj[key],
+					symbolSize: 85
+				});
+				arrDate.push(key);
+			})
+
+			let startDate = +new Date(arrDate[0]);
+			let endDate = +new Date(arrDate[arrDate.length - 1]);
+			let days = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
+			let average = (count / days).toFixed(2);
+			let subtext = days + ' 天，每天 ' + average;
+
+			var myChart = echarts.init(document.getElementById('main'));
+			var option = {
+				grid: {
+					top: 100,
+					left: '5%',
+					right: '5%'
+				},
+				title: {
+					left: 'center',
+					text: count.toFixed(2),
+					subtext
+				},
+				tooltip: {
+					show: true,
+					trigger: "axis"
+				},
+				xAxis: {
+					type: 'category',
+					axisLabel: {
+						rotate: 45
+					},
+					boundaryGap: false,
+					data: xAxisData
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [{
+					data: seriesData,
+					type: 'line',
+					markLine: {
+						data: [{
+							name: '平均线',
+							type: 'average'
+						}],
+						lineStyle: {
+							color: 'rgba(255, 0, 0, 0.7)'
+						}
+					},
+					markPoint: { // markLine 也是同理
+						data: markPointData,
+						itemStyle: {
+							color: 'rgba(64, 158, 255, 0.5)'
+						}
+					}
+				}]
+			};
+
+			myChart.setOption(option);
+
+			window.onresize = function() {
+				myChart.resize();
+			}
+		</script>
+	</body>
+</html>
