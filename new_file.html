@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function cal(curPrice = 12.967, curNum = 300, buyPrice = 12.02) {
+				let nextPrice = buyPrice * 1.02;
+				// let nextPrice = 11.876;
+
+				let buyNum = ((curPrice - nextPrice) * curNum) / (nextPrice - buyPrice);
+				buyNum = Math.round(buyNum / 100) * 100;
+				let money = Math.ceil(buyPrice * buyNum);
+				// 手续费
+				let commission = Math.ceil(money / 10000) * 5;
+				let totalMoney = ((curPrice * curNum) + (buyPrice * buyNum) + commission).toFixed(3);
+				// 成本
+				let realPrice = (totalMoney / (curNum + buyNum)).toFixed(3);
+				// 比例
+				let percent = ((1 - (buyPrice / realPrice)) * 100).toFixed(3);
+
+				let res =
+					'以' + buyPrice + '元的价格买入' + buyNum + '股，' +
+					'成本降为' + realPrice + '元，' +
+					'亏损比例降为' + percent + '%，' +
+					'本次花费' + money + '元，' +
+					'总共花费' + totalMoney + '元，' +
+					'总共' + (curNum + buyNum) + '股'
+				console.log(res);
+			}
+
+			// cal(11.878, 800, 11.28);
+			cal(17.74, 600, 16.33);
+			cal(16.663, 2600, 8.73);
+			// cal(15.480, 12800, 12.31);
+		</script>
+	</body>
+</html>
