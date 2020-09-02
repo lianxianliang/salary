@@ -69,6 +69,8 @@
 				'2020-05-14': 9197.89,
 				'2020-06-23': 9585.88,
 				'2020-06-24': 9585.89,
+				'2020-07-29': 18772.47,
+				'2020-08-21': 9560.89,
 			}
 
 			let count = 0;
@@ -89,14 +91,30 @@
 				arrDate.push(key);
 			})
 
-			let startDate = +new Date(arrDate[0]);
-			let endDate = +new Date(arrDate[arrDate.length - 1]);
-			let days = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
+			// let startDate = +new Date(arrDate[0]);
+			// let endDate = +new Date(arrDate[arrDate.length - 1]);
+
+			let startDate = +new Date('2016-12-06');
+			let endDate = +new Date();
+			let days = Math.ceil((endDate - startDate) / (1 * 24 * 60 * 60 * 1000));
 			let average = (count / days).toFixed(2);
 			let subtext = days + ' 天，每天 ' + average;
 
 			var myChart = echarts.init(document.getElementById('main'));
 			var option = {
+				dataZoom: [{
+						show: true,
+						realtime: true,
+						startValue: '2017-01-12',
+						endValue: '2019-10-15'
+					},
+					{
+						type: 'inside',
+						realtime: true,
+						startValue: '2017-01-12',
+						endValue: '2019-10-15'
+					}
+				],
 				grid: {
 					top: 100,
 					left: '5%',
