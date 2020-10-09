@@ -71,6 +71,7 @@
 				'2020-06-24': 9585.89,
 				'2020-07-29': 18772.47,
 				'2020-08-21': 9560.89,
+				'2020-09-22': 12484.45,
 			}
 
 			let count = 0;
@@ -91,8 +92,9 @@
 				arrDate.push(key);
 			})
 
-			// let startDate = +new Date(arrDate[0]);
-			// let endDate = +new Date(arrDate[arrDate.length - 1]);
+			let temArr = Object.keys(obj).map(item => {
+				return item;
+			})
 
 			let startDate = +new Date('2016-12-06');
 			let endDate = +new Date();
@@ -105,14 +107,14 @@
 				dataZoom: [{
 						show: true,
 						realtime: true,
-						startValue: '2017-01-12',
-						endValue: '2019-10-15'
+						startValue: temArr[temArr.length - 36],
+						endValue: temArr[temArr.length - 1]
 					},
 					{
 						type: 'inside',
 						realtime: true,
-						startValue: '2017-01-12',
-						endValue: '2019-10-15'
+						startValue: temArr[temArr.length - 33],
+						endValue: temArr[temArr.length - 1]
 					}
 				],
 				grid: {
