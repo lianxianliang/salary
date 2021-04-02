@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title></title>
+		<style type="text/css">
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				align-items: center;
+			}
+
+			#main {
+				width: 100%;
+				height: 75vh;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main"></div>
+
+		<script src="echarts.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			let obj = {
+				'2018-06-13': 1930,
+				'2018-07-02': 930,
+				'2018-08-01': 930,
+				'2018-09-29': 2155,
+				'2018-11-02': 930,
+				'2018-12-03': 1250,
+				'2019-01-03': 1165,
+				'2019-02-01': 930,
+				'2019-03-01': 1150,
+				'2019-04-04': 930,
+				'2019-05-05': 930,
+				'2019-06-05': 930,
+				'2019-07-01': 1190,
+				'2019-08-04': 1375,
+				'2019-09-02': 1295,
+				'2019-10-03': 930,
+				'2019-11-01': 930,
+				'2019-12-01': 930,
+				'2020-01-01': 930,
+				'2020-02-01': 930,
+				'2020-03-04': 930,
+				'2020-04-03': 930,
+				'2020-05-02': 930,
+				'2020-06-01': 930,
+				'2020-07-02': 2035,
+				'2020-08-04': 930,
+				'2020-09-03': 1545,
+				'2020-10-07': 930,
+				'2020-11-04': 1135,
+				'2020-12-02': 930,
+				'2021-01-04': 1135,
+				'2021-02-02': 1060,
+				'2021-03-02': 980,
+				'2021-03-02': 930,
+			}
+
+			let count = 0;
+			let xAxisData = [];
+			let seriesData = [];
+			let markPointData = [];
+
+			let arrDate = [];
+			Object.keys(obj).forEach((key, idx) => {
+				count += obj[key];
+				xAxisData.push(key);
+				seriesData.push(obj[key]);
+				markPointData.push({
+					coord: [idx, obj[key]],
+					value: obj[key],
+					symbolSize: 85
+				});
+				arrDate.push(key);
+			})
+
+			let temArr = Object.keys(obj).map(item => {
+				return item;
+			})
+
+			let startDate = +new Date('2018-06-13');
+			let endDate = +new Date();
+			let days = Math.ceil((endDate - startDate) / (1 * 24 * 60 * 60 * 1000));
+			let average = (count / days).toFixed(2);
+			let subtext = days + ' 天，每天 ' + average;
+
+			var myChart = echarts.init(document.getElementById('main'));
+			var option = {
+				dataZoom: [{
+						show: true,
+						realtime: true,
+						startValue: temArr[temArr.length - 30],
+						endValue: temArr[temArr.length - 1]
+					},
+					{
+						type: 'inside',
+						realtime: true,
+						startValue: temArr[temArr.length - 27],
+						endValue: temArr[temArr.length - 1]
+					}
+				],
+				grid: {
+					top: 100,
+					left: '5%',
+					right: '5%'
+				},
+				title: {
+					left: 'center',
+					text: count.toFixed(2),
+					subtext
+				},
+				tooltip: {
+					show: true,
+					trigger: "axis"
+				},
+				xAxis: {
+					type: 'category',
+					axisLabel: {
+						rotate: 45
+					},
+					boundaryGap: false,
+					data: xAxisData
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [{
+					data: seriesData,
+					type: 'line',
+					markLine: {
+						data: [{
+							name: '平均线',
+							type: 'average'
+						}],
+						lineStyle: {
+							color: 'rgba(255, 0, 0, 0.7)'
+						}
+					},
+					markPoint: { // markLine 也是同理
+						data: markPointData,
+						itemStyle: {
+							color: 'rgba(64, 158, 255, 0.5)'
+						}
+					}
+				}]
+			};
+
+			myChart.setOption(option);
+
+			window.onresize = function() {
+				myChart.resize();
+			}
+		</script>
+	</body>
+</html>
